@@ -7,12 +7,12 @@ Organization:
 * SDX-ch8: The code files for the _SDX Ch. 8_ activity (as downloaded directly from the book website, unmodified) 
 
 ## Team Members for Part 1
-Enter your names here
+Molly and Steven
 
 ## Team Roles for Part 1
 Who will start out as
-* DRIVER: Driver's name
-* NAVIGATOR: Navigator's name
+* DRIVER: Molly
+* NAVIGATOR: Steven
 
 You will switch halfway through the _SDX Ch. 8_ activity.
 
@@ -21,6 +21,9 @@ You will switch halfway through the _SDX Ch. 8_ activity.
 Write your answers to the questions below.
 
 * What were the main ideas from SDX chapter 8?
+Closure and function labels, eager and lazy evaluation as well as scoping rules.
+
 * What questions did you have about the material in the chapters? What did you find confusing?
+Nothing at the moment.
 
 Write a short summary of what you did (which exercises) below.

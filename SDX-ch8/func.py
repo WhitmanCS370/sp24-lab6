@@ -111,6 +111,10 @@ def do(env, instruction):
     return OPERATIONS[op](env, args)
 
 def env_get(env, name):
+    """
+    Determining known vs unknown variables in the environment. 
+    Returns the name of the environment.
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
@@ -118,6 +122,9 @@ def env_get(env, name):
     assert False, f"Unknown variable {name}"
 
 def env_set(env, name, value):
+    """
+    Setting a new 
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
