@@ -9,14 +9,30 @@ def do_add(env, args):
 
 # [call]
 def do_call(env, args):
+    """
+    Executes a function call in the given environment.
+
+    Args:
+        env (list): The environment in which the function call is executed.
+        args (list): The arguments passed to the function call.
+
+    Returns:
+        The result of the function call.
+    """
+
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
-    values = [do(env, a) for a in args[1:]]
-
+    for i in range(0,len(env)):
+        if args[0] in env[i]:
+            name = args[0]
+            values = [do(env, a) for a in args[1:]]
+        else:
+            env_set(env, "func", args)
+            do_call(env, args)
+            
     # Find the function.
     func = env_get(env, name)
-    assert isinstance(func, list) and (func[0] == "func")
+    assert isinstance(func, list) and func[0]  == "func"
     params, body = func[1], func[2]
     assert len(values) == len(params)
 
@@ -25,7 +41,7 @@ def do_call(env, args):
     result = do(env, body)
     env.pop()
 
-    # Report.
+    # Report.      
     return result
 # [/call]
 
@@ -111,6 +127,24 @@ def do(env, instruction):
     return OPERATIONS[op](env, args)
 
 def env_get(env, name):
+    """
+    Retrieve the value of a variable from the environment.
+
+    This function searches for the variable `name` in the given environment `env`.
+    It iterates through the environment in reverse order and returns the value of the first occurrence of the variable.
+    If the variable is not found, an AssertionError is raised with a message indicating the unknown variable.
+
+    Args:
+        env (list): The environment to search in.
+        name (str): The name of the variable to retrieve.
+
+    Returns:
+        The value of the variable.
+
+    Raises:
+        AssertionError: If the variable is not found in the environment.
+
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
@@ -118,6 +152,17 @@ def env_get(env, name):
     assert False, f"Unknown variable {name}"
 
 def env_set(env, name, value):
+    """
+    Sets the value of a variable in the environment.
+
+    Args:
+        env (list[dict]): The environment, represented as a list of dictionaries.
+        name (str): The name of the variable.
+        value: The value to be assigned to the variable.
+
+    Returns:
+        None
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
