@@ -7,10 +7,16 @@ def do_add(env, args):
     right = do(env, args[1])
     return left + right
 
+"""
+
+"""
 # [call]
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
+    if args[0] is str:
+        print("string")
+    
     name = args[0]
     values = [do(env, a) for a in args[1:]]
 
@@ -21,7 +27,12 @@ def do_call(env, args):
     assert len(values) == len(params)
 
     # Run in new environment.
-    env.append(dict(zip(params, values)))
+    # env.append(dict(zip(params, values)))
+
+    paramsDict = {}
+    for i in range(len(params)):
+        paramsDict[params[i]] = values[values[i]]
+
     result = do(env, body)
     env.pop()
 
