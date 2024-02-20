@@ -12,6 +12,7 @@ def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
     name = args[0]
+    assert isinstance(name, str)
     values = [do(env, a) for a in args[1:]]
 
     # Find the function.
@@ -116,6 +117,12 @@ def env_get(env, name):
         if name in e:
             return e[name]
     assert False, f"Unknown variable {name}"
+    """
+    The function first checks if the name parameter we have provided is a string value or not. Then, in the environment that keeps track
+    of all the variables, we traverse through each key value pair until we find the key that matches the name parameter that we provided.
+    Then it returns the key value, otherwise it shows that the name parameter doesnt exist.
+    """
+
 
 def env_set(env, name, value):
     assert isinstance(name, str)
@@ -124,6 +131,11 @@ def env_set(env, name, value):
             e[name] = value
             return
     env[-1][name] = value
+"""
+This function first checks if the name parameter is a string. It then traverses through the environment that keeps track of all 
+variables and if name exists then it returns it, and if it doesnt then it defines a new variable at the end of the list.
+"""
+
 
 def main():
     assert len(sys.argv) == 2, "Usage: func.py filename"
