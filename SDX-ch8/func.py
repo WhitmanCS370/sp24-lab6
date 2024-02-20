@@ -16,7 +16,11 @@ def do_call(env, args):
 
     # Find the function.
     func = env_get(env, name)
+    if func[0] == "not_func":
+        return
     assert isinstance(func, list) and (func[0] == "func")
+    # if (func[0] != "not_func" and thing has 3 args) -> should work
+    # or (func[0] == "func" and thing has 2 args) -> should also work
     params, body = func[1], func[2]
     assert len(values) == len(params)
 
@@ -34,10 +38,16 @@ def do_comment(env, args):
 
 # [func]
 def do_func(env, args):
+    if len(args) == 3:
+        func_name = args[0]
+        param = args[1]
+        body = args[2]
+        return [func_name, param, body]
     assert len(args) == 2
     params = args[0]
     body = args[1]
     return ["func", params, body]
+    # do a lookup table of functions?
 # [/func]
 
 def do_get(env, args):
@@ -115,7 +125,8 @@ def env_get(env, name):
     for e in reversed(env):
         if name in e:
             return e[name]
-    assert False, f"Unknown variable {name}"
+    #assert False, f"Unknown variable {name}"
+    return ["not_func", name]
 
 def env_set(env, name, value):
     assert isinstance(name, str)

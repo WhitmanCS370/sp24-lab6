@@ -1,6 +1,6 @@
 ["seq",
   ["set", "double",
-    ["func", ["num"],
+    ["func", ["thing"], ["num"],
       ["add", ["get", "num"], ["get", "num"]]
     ]
   ],
@@ -8,5 +8,6 @@
   ["repeat", 4, ["seq",
     ["set", "a", ["call", "double", ["get", "a"]]],
     ["print", ["get", "a"]]
-  ]]
+  ]],
+  ["call", "hbuavbhbhivbive"]
 ]
