@@ -11,7 +11,8 @@ def do_add(env, args):
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
+    name = do(env, args[0])  # Evaluate args[0] to handle both primitive string value and any operation that evaluates to a func
+    # Doing both cases with do() might work. I think do can accept both input types and return correctly.
     values = [do(env, a) for a in args[1:]]
 
     # Find the function.
@@ -111,6 +112,13 @@ def do(env, instruction):
     return OPERATIONS[op](env, args)
 
 def env_get(env, name):
+    """
+    Getting a variable from the environment.
+    Input: 
+    - env: the environment to set the variable in
+    - name: the name of the variable to set
+    Output: the value of the variable, or error text if variable not found
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
@@ -118,6 +126,14 @@ def env_get(env, name):
     assert False, f"Unknown variable {name}"
 
 def env_set(env, name, value):
+    """
+    Setting a variable in the environment.
+    Input: 
+    - env: the environment to set the variable in
+    - name: the name of the variable to set
+    - value: the value to set the variable to
+    Output: None
+    """
     assert isinstance(name, str)
     for e in reversed(env):
         if name in e:
