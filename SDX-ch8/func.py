@@ -112,8 +112,11 @@ def do(env, instruction):
 
 def env_get(env, name):
     """
-    Determining known vs unknown variables in the environment. 
-    Returns the name of the environment.
+    Getting a variable from the environment.
+    Input: 
+    - env: the environment to set the variable in
+    - name: the name of the variable to set
+    Output: the value of the variable, or error text if variable not found
     """
     assert isinstance(name, str)
     for e in reversed(env):
@@ -123,7 +126,12 @@ def env_get(env, name):
 
 def env_set(env, name, value):
     """
-    Setting a new 
+    Setting a variable in the environment.
+    Input: 
+    - env: the environment to set the variable in
+    - name: the name of the variable to set
+    - value: the value to set the variable to
+    Output: None
     """
     assert isinstance(name, str)
     for e in reversed(env):

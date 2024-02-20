@@ -11,8 +11,8 @@ Molly and Steven
 
 ## Team Roles for Part 1
 Who will start out as
-* DRIVER: Molly
-* NAVIGATOR: Steven
+* DRIVER: Steven
+* NAVIGATOR: Molly
 
 You will switch halfway through the _SDX Ch. 8_ activity.
 
