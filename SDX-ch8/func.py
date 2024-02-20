@@ -11,17 +11,24 @@ def do_add(env, args):
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
-    values = [do(env, a) for a in args[1:]]
-
+    if isinstance(args[0], str):
+        name = args[0]
+        values = [do(env, a) for a in args[1:]]
+        func = env_get(env, name)
+    elif isinstance(args[0], list):
+        values = [do(env, a) for a in args[1:]]
+        func = args[0]
+        
     # Find the function.
-    func = env_get(env, name)
     assert isinstance(func, list) and (func[0] == "func")
     params, body = func[1], func[2]
     assert len(values) == len(params)
 
     # Run in new environment.
-    env.append(dict(zip(params, values)))
+    paramVal = {}
+    for i in range(len(params)):
+        paramVal[params[i]] = values[i]
+    env.append(paramVal)
     result = do(env, body)
     env.pop()
 
@@ -34,10 +41,19 @@ def do_comment(env, args):
 
 # [func]
 def do_func(env, args):
-    assert len(args) == 2
-    params = args[0]
-    body = args[1]
-    return ["func", params, body]
+    assert len(args) >= 2 and len(args) < 4 
+    if len(args) == 2:
+        params = args[0]
+        body = args[1]
+        return ["func", params, body]
+    else:
+        do_set(env, args)
+        name = args[0]
+        params = args[1]
+        body = args[2]
+        return [name, params, body]
+
+
 # [/func]
 
 def do_get(env, args):
