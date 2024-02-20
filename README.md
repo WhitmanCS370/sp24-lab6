@@ -12,7 +12,7 @@ Enter your names here
 ## Team Roles for Part 1
 Who will start out as
 * DRIVER: Oliver Baltzer
-* NAVIGATOR: Navigator's name
+* NAVIGATOR: Fabian Gabriel
 
 You will switch halfway through the _SDX Ch. 8_ activity.
 
