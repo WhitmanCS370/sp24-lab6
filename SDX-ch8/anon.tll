@@ -1,0 +1,2 @@
+["call",
+    ["func", ["num"] ,["get", "num"]],3]
