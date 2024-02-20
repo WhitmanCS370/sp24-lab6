@@ -11,7 +11,8 @@ def do_add(env, args):
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
+    name = do(env, args[0])  # Evaluate args[0] to handle both primitive string value and any operation that evaluates to a func
+    # Doing both cases with do() might work. I think do can accept both input types and return correctly.
     values = [do(env, a) for a in args[1:]]
 
     # Find the function.
