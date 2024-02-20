@@ -11,17 +11,27 @@ def do_add(env, args):
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
-    values = [do(env, a) for a in args[1:]]
+    if (not isinstance(args[0], str)) and isinstance(args[0], list):
+        params, body = args[0][0], args[0][1]
+        values = [do(env, a) for a in args[1:]]
+    else:
+        name = args[0]
+        values = [do(env, a) for a in args[1:]]
 
-    # Find the function.
-    func = env_get(env, name)
-    assert isinstance(func, list) and (func[0] == "func")
-    params, body = func[1], func[2]
+        # Find the function.
+        func = env_get(env, name)
+        assert isinstance(func, list) and (func[0] == "func")
+        params, body = func[1], func[2]
+
     assert len(values) == len(params)
 
     # Run in new environment.
-    env.append(dict(zip(params, values)))
+    # env.append(dict(zip(params, values)))
+    # As long as you know wht zip does either method is readable
+    tempDict = {}
+    for i in range(len(params)):
+        tempDict.update({params[i]: values[i]})
+    env.append(tempDict)
     result = do(env, body)
     env.pop()
 
@@ -91,6 +101,9 @@ def do_seq(env, args):
 
 def do_set(env, args):
     assert len(args) == 2
+    if env_get(env, args[0]) is not None:
+        assert False, f"Variable {args[0]} already exists"
+
     name = args[0]
     value = do(env, args[1])
     env_set(env, name, value)
@@ -110,6 +123,7 @@ def do(env, instruction):
     assert op in OPERATIONS
     return OPERATIONS[op](env, args)
 
+# Checks if a function or a variable is in an environment.
 def env_get(env, name):
     assert isinstance(name, str)
     for e in reversed(env):
@@ -117,6 +131,7 @@ def env_get(env, name):
             return e[name]
     assert False, f"Unknown variable {name}"
 
+# Sets a variable in an environment.
 def env_set(env, name, value):
     assert isinstance(name, str)
     for e in reversed(env):

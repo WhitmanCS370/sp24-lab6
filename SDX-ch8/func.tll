@@ -6,7 +6,7 @@
   ],
   ["set", "a", 1],
   ["repeat", 4, ["seq",
-    ["set", "a", ["call", "double", ["get", "a"]]],
+    ["set", "a", ["call", [["num"], ["add", ["get", "num"], ["get", "num"]]], ["get", "a"]]],
     ["print", ["get", "a"]]
   ]]
 ]
