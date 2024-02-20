@@ -10,9 +10,8 @@ Organization:
 Enter your names here
 
 ## Team Roles for Part 1
-Who will start out as
-* DRIVER: Driver's name
-* NAVIGATOR: Navigator's name
+* DRIVER: John Leeds
+* NAVIGATOR: Clara Bates
 
 You will switch halfway through the _SDX Ch. 8_ activity.
 
@@ -21,6 +20,29 @@ You will switch halfway through the _SDX Ch. 8_ activity.
 Write your answers to the questions below.
 
 * What were the main ideas from SDX chapter 8?
+
+* Scoping rules and closures (new environment for different functions)
+* Anonymous functions
+* Functions as data
+
 * What questions did you have about the material in the chapters? What did you find confusing?
 
+* The naming and diagrams in the chapter was confusing
+* What is stored when you set a variable to a function?
+
 Write a short summary of what you did (which exercises) below.
+
+Exercise 1)
+When looking for the contents of a variable, you search through each environment in reverse order.
+This way, you get the variable from the environment that was most recently added.
+
+`env_set()` checks for a preexisting variable before creating a new one.
+
+[
+    {a = 10, b = 17},
+    {a = 12}
+]
+
+Here if you search for a, it will return 12 and searching for b will give you 17.
+
+We completed exercise 2, and exercise 3 A, B, C, and D!
