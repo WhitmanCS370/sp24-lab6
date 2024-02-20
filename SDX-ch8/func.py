@@ -1,5 +1,6 @@
 import json
 import sys
+import ChainMap
 
 def do_add(env, args):
     assert len(args) == 2
@@ -11,17 +12,28 @@ def do_add(env, args):
 def do_call(env, args):
     # Set up the call.
     assert len(args) >= 1
-    name = args[0]
+    func_or_name = args[0]
+    
+    # check if we have function or name.
+    if not isinstance(func_or_name, str):
+        func = do(env, func_or_name)
+    else:
+        func = env_set(env, func_or_name)
+
     values = [do(env, a) for a in args[1:]]
 
     # Find the function.
-    func = env_get(env, name)
     assert isinstance(func, list) and (func[0] == "func")
     params, body = func[1], func[2]
     assert len(values) == len(params)
 
     # Run in new environment.
-    env.append(dict(zip(params, values)))
+    d = {}
+    for i,j in zip(params, values):
+        d[i] = j
+    env.new_child(d)
+    
+    # env.append(dict(zip(params, values)))
     result = do(env, body)
     env.pop()
 
@@ -34,9 +46,15 @@ def do_comment(env, args):
 
 # [func]
 def do_func(env, args):
-    assert len(args) == 2
-    params = args[0]
-    body = args[1]
+    assert len(args) == 2 or len(args) == 3
+    if len(args) == 3:
+        name = args[0]
+        params = args[1]
+        body = args[2]
+        env_set(env, name, body)
+    else:
+        params = args[0]
+        body = args[1]
     return ["func", params, body]
 # [/func]
 
@@ -110,6 +128,7 @@ def do(env, instruction):
     assert op in OPERATIONS
     return OPERATIONS[op](env, args)
 
+# getting function names in environemnt.
 def env_get(env, name):
     assert isinstance(name, str)
     for e in reversed(env):
@@ -117,11 +136,12 @@ def env_get(env, name):
             return e[name]
     assert False, f"Unknown variable {name}"
 
+# initializing the function names.
 def env_set(env, name, value):
     assert isinstance(name, str)
-    for e in reversed(env):
+    for e in reversed(env.values()):
         if name in e:
-            e[name] = value
+            env[name] = value
             return
     env[-1][name] = value
 
@@ -129,7 +149,8 @@ def main():
     assert len(sys.argv) == 2, "Usage: func.py filename"
     with open(sys.argv[1], "r") as reader:
         program = json.load(reader)
-    result = do([{}], program)
+    merged = ChainMap({})
+    result = do(merged, program)
     print(f"=> {result}")
 
 if __name__ == "__main__":
