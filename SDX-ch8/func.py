@@ -47,7 +47,7 @@ def do_func(env, args):
     params = args[0]
     body = args[1]
     return ["func", params, body]
-    # do a lookup table of functions?
+    # do a lookup table of functions? deal with it like how we deal with operations?
 # [/func]
 
 def do_get(env, args):
